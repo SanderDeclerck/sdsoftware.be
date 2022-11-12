@@ -1,5 +1,5 @@
 param location string = resourceGroup().location
-param hostnames array
+param customDomains array
 
 resource staticFrontend 'Microsoft.Web/staticSites@2022-03-01' = {
   name: 'sdsoftware-be-static-app'
@@ -11,8 +11,20 @@ resource staticFrontend 'Microsoft.Web/staticSites@2022-03-01' = {
   }
 }
 
-
-resource staticWebappHostnames  'Microsoft.Web/staticSites/customDomains@2022-03-01' = [ for hostname in hostnames: {
-  name: hostname
-  parent: staticFrontend
+module staticWebappHostnamesDnsRecords 'dns/cname.bicep' = [for customDomain in customDomains: {
+  name: 'records'
+  scope: resourceGroup(customDomain.resourceGroup)
+  params: {
+    dnsZone: customDomain.dnsZone
+    subdomain: customDomain.dnsRecordName
+    cname: staticFrontend.properties.defaultHostname
+  }
 }]
+
+resource staticWebappHostnames  'Microsoft.Web/staticSites/customDomains@2022-03-01' = [ for customDomain in customDomains: {
+  name: customDomain.hostname
+  parent: staticFrontend
+  dependsOn: staticWebappHostnamesDnsRecords
+}]
+
+
