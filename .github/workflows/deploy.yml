@@ -1,0 +1,25 @@
+name: 'Deploy'
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+
+  deploy_infrastructure:
+    name: '🏢 Deploy infrastructure'
+    runs-on: 'ubuntu-latest'
+    
+    steps:
+    - name: '⚙️ Prepare: Checkout code'
+      uses: 'actions/checkout@v1'
+    
+  deploy_app:
+    name: '🚀 Deploy application'
+    runs-on: 'ubuntu-latest'
+    
+    steps:
+    - name: '⚙️ Prepare: Checkout code'
+      uses: 'actions/checkout@v1'
+    
