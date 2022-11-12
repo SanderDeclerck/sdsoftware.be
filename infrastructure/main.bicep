@@ -12,7 +12,7 @@ resource staticFrontend 'Microsoft.Web/staticSites@2022-03-01' = {
 }
 
 module staticWebappHostnamesDnsRecords 'dns/cname.bicep' = [for customDomain in customDomains: {
-  name: 'records'
+  name: 'cname-${customDomain.hostname}'
   scope: resourceGroup(customDomain.resourceGroup)
   params: {
     dnsZone: customDomain.dnsZone
