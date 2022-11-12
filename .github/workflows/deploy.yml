@@ -35,7 +35,10 @@ jobs:
     - name: '🏢 Infrastructure: Deploy bicep template'
       uses: 'azure/CLI@v1'
       with:
-        inlinescript: az deployment group create -g ${{ secrets.RESOURCE_GROUP_NAME }} --template-file ./infrastructure/main.bicep
+        inlinescript: |
+          az deployment group create -g ${{ secrets.RESOURCE_GROUP_NAME }} \
+                                     --template-file ./infrastructure/main.bicep \
+                                     --parameters hostnames='[ "www.sdsoftware.be" ]'
     
   deploy_app:
     name: '🚀 Deploy application'
