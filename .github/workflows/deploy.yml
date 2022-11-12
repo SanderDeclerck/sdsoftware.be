@@ -10,6 +10,9 @@ jobs:
   deploy_infrastructure:
     name: '🏢 Deploy infrastructure'
     runs-on: 'ubuntu-latest'
+
+    permissions:
+      id-token: write
     
     steps:
     - name: '⚙️ Prepare: Checkout code'
