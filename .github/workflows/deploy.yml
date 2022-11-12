@@ -38,9 +38,9 @@ jobs:
         inlinescript: |
           az deployment group create -g ${{ secrets.RESOURCE_GROUP_NAME }} \
                                      --template-file ./infrastructure/main.bicep \
-                                     --parameters customDomains='['
-'{ "hostname": "www.sdsoftware.be", "dnsZone": "sdsoftware.be", "resourceGroup": "shared", "dnsRecordName": "www" },'
-'{ "hostname": "sdsoftware.be", "dnsZone": "sdsoftware.be", "resourceGroup": "shared", "dnsRecordName": "@" },'
+                                     --parameters customDomains='[' \
+'{ "hostname": "www.sdsoftware.be", "dnsZone": "sdsoftware.be", "resourceGroup": "shared", "dnsRecordName": "www" },' \
+'{ "hostname": "sdsoftware.be", "dnsZone": "sdsoftware.be", "resourceGroup": "shared", "dnsRecordName": "@" },' \
 ']'
     
   deploy_app:
