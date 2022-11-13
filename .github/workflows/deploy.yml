@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  APP_NAME: 
+  APP_NAME: 'sdsoftware-be-static-app'
 
 jobs:
 
