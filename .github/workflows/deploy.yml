@@ -66,9 +66,13 @@ jobs:
         enable-AzPSSession: true
 
     - name: '⚙️ Prepare: Get deployment credential'
+      id: get_credential
       uses: 'azure/CLI@v1'
       with:
-        inlinescript: az staticwebapp secrets list --name '${{ env.APP_NAME }}' --query properties.apiKey
+        inlinescript: echo "DEPLOYMENT_CREDENTIAL=$(az staticwebapp secrets list --name '${{ env.APP_NAME }}' --query properties.apiKey -o tsv)" >> $GITHUB_OUTPUT
+
+    - name: 'test'
+      run: echo ${{ steps.get_credential.outputs.DEPLOYMENT_CREDENTIAL }}
 
     - name: '🪣 Clean-up: Reset deployment credentials'
       uses: 'azure/CLI@v1'
