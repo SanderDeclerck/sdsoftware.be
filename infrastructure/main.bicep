@@ -1,8 +1,9 @@
 param location string = resourceGroup().location
+param staticWebAppName string
 param customDomains array
 
 resource staticFrontend 'Microsoft.Web/staticSites@2022-03-01' = {
-  name: 'sdsoftware-be-static-app'
+  name: staticWebAppName
   location: location
   properties: { }
   sku: {
@@ -26,5 +27,3 @@ resource staticWebappHostnames  'Microsoft.Web/staticSites/customDomains@2022-03
   parent: staticFrontend
   dependsOn: staticWebappHostnamesDnsRecords
 }]
-
-

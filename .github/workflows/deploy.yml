@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-      
+
+env:
+  APP_NAME: 
+
 jobs:
 
   deploy_infrastructure:
@@ -38,7 +41,8 @@ jobs:
         inlinescript: |
           az deployment group create -g ${{ secrets.RESOURCE_GROUP_NAME }} \
                                      --template-file ./infrastructure/main.bicep \
-                                     --parameters customDomains='[ { "hostname": "www.sdsoftware.be", "dnsZone": "sdsoftware.be", "resourceGroup": "shared", "dnsRecordName": "www" } ]'
+                                     --parameters customDomains='[ { "hostname": "www.sdsoftware.be", "dnsZone": "sdsoftware.be", "resourceGroup": "shared", "dnsRecordName": "www" } ]' \
+                                     --parameters staticWebAppName=$APP_NAME
     
   deploy_app:
     name: '🚀 Deploy application'
@@ -49,4 +53,14 @@ jobs:
     steps:
     - name: '⚙️ Prepare: Checkout code'
       uses: 'actions/checkout@v1'
+
+    - name: '⚙️ Prepare: Get deployment credential'
+      uses: 'azure/CLI@v1'
+      with:
+        inlinescript: az staticwebapp secrets list --name $APP_NAME --query properties.apiKey
+
+    - name: '🪣 Clean-up: Reset deployment credentials'
+      uses: 'azure/CLI@v1'
+      with:
+        inlinescript: az staticwebapp secrets reset-api-key --name $APP_NAME
     
