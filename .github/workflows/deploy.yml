@@ -70,9 +70,13 @@ jobs:
       uses: 'azure/CLI@v1'
       with:
         inlinescript: echo "DEPLOYMENT_CREDENTIAL=$(az staticwebapp secrets list --name '${{ env.APP_NAME }}' --query properties.apiKey -o tsv)" >> $GITHUB_OUTPUT
-
-    - name: 'test'
-      run: echo ${{ steps.get_credential.outputs.DEPLOYMENT_CREDENTIAL }}
+    
+    - name: '🚀 Deploy to Azure Static Webapps'
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ steps.get_credential.outputs.DEPLOYMENT_CREDENTIAL }}
+        action: "upload"
+        app_location: "src"
 
     - name: '🪣 Clean-up: Reset deployment credentials'
       uses: 'azure/CLI@v1'
