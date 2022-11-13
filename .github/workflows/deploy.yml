@@ -54,6 +54,14 @@ jobs:
     - name: '⚙️ Prepare: Checkout code'
       uses: 'actions/checkout@v1'
 
+    - name: '⚙️ Prepare: Login to Azure'
+      uses: 'azure/login@v1'
+      with:
+        client-id: ${{ secrets.ACTIVE_DIRECTORY_APPLICATION_ID }}
+        tenant-id: ${{ secrets.ACTIVE_DIRECTORY_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+        enable-AzPSSession: true
+
     - name: '⚙️ Prepare: Get deployment credential'
       uses: 'azure/CLI@v1'
       with:
